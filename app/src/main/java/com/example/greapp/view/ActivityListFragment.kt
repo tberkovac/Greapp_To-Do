@@ -37,7 +37,7 @@ class ActivityListFragment() : Fragment() {
     }
 
     private fun onSuccessGetActivities(act : List<DailyActivity>){
-        adapter.updateActivites(act)
+        adapter.updateActivities(act)
         adapter.notifyDataSetChanged()
     }
 

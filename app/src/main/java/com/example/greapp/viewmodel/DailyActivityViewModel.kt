@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.reflect.KFunction1
 
 class DailyActivityViewModel {
@@ -21,6 +22,18 @@ class DailyActivityViewModel {
         scope.launch {
             val activites = DailyActivityRepository.getAllActivities()
             onSuccess.invoke(activites)
+        }
+    }
+
+    fun activityDoneUpdate(id: Int) {
+        scope.launch {
+            DailyActivityRepository.activityDoneUpdate(Calendar.getInstance().time,id)
+        }
+    }
+
+    fun deleteActivity(activity: DailyActivity) {
+        scope.launch {
+            DailyActivityRepository.deleteActivity(activity)
         }
     }
 }

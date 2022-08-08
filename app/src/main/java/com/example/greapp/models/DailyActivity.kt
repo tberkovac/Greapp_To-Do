@@ -12,8 +12,8 @@ import java.util.*
 data class DailyActivity(
     @ColumnInfo(name = "name") @SerializedName("name") val name : String,
     @ColumnInfo(name = "note") @SerializedName("note") val note : String,
-    @SerializedName("startTime") val startTime : Date?,
-    @SerializedName("expectedEndTime") val expectedEndTime : Date?,
+    @SerializedName("startTime") val startTime : Date,
+    @SerializedName("expectedEndTime") val expectedEndTime : Date,
     @SerializedName("markedFinishedTime") val markedFinishedTime : Date?
 
     ) : Parcelable {

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.greapp.models.DailyActivity
 
-@Database (entities = arrayOf(DailyActivity::class), version = 1)
+@Database (entities = arrayOf(DailyActivity::class), version = 2)
 @TypeConverters(DateConverter::class)
 abstract class GreappDB : RoomDatabase() {
     abstract fun dailyActivityDao() : DailyActivityDao

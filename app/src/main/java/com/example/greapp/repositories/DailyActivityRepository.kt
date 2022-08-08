@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.greapp.models.DailyActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class DailyActivityRepository {
     companion object {
@@ -30,6 +31,20 @@ class DailyActivityRepository {
             return withContext(Dispatchers.IO) {
                 val db = GreappDB.getInstance(mcontext)
                 return@withContext db.dailyActivityDao().getAll()
+            }
+        }
+
+        suspend fun activityDoneUpdate(date : Date, id: Int) {
+            return withContext(Dispatchers.IO){
+                val db = GreappDB.getInstance(mcontext)
+                return@withContext db.dailyActivityDao().update(id, date)
+            }
+        }
+
+        suspend fun deleteActivity(activity: DailyActivity) {
+            return withContext(Dispatchers.IO){
+                val db = GreappDB.getInstance(mcontext)
+                return@withContext db.dailyActivityDao().delete(activity)
             }
         }
     }

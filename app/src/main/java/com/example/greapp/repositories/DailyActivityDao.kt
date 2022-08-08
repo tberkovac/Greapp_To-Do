@@ -1,10 +1,8 @@
 package com.example.greapp.repositories
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import com.example.greapp.models.DailyActivity
+import java.util.*
 
 @Dao
 interface DailyActivityDao {
@@ -12,6 +10,16 @@ interface DailyActivityDao {
     @Query ("SELECT * FROM DailyActivity")
     fun getAll() : List<DailyActivity>
 
+    @Query("UPDATE DailyActivity SET markedFinishedTime = :time WHERE id = :id")
+    fun update(id : Int, time: Date)
+
     @Insert
-    suspend fun insert (vararg dailyActivity: DailyActivity)
+    fun insert (vararg dailyActivity: DailyActivity)
+
+    @Delete
+    fun delete (activity: DailyActivity)
+
+
+
+
 }
