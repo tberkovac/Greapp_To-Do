@@ -8,16 +8,15 @@
 
     <FrameLayout
         android:id="@+id/frame1Id"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="376dp"
+        android:layout_height="367dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
         android:layout_marginTop="100dp"
-        />
-
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+<!--
     <FrameLayout
         android:id="@+id/frame2Id"
         app:layout_constraintTop_toBottomOf="@+id/frame1Id"
@@ -29,25 +28,26 @@
         android:layout_height="200dp"
         android:layout_marginTop="16dp"
         />
+-->
 
     <Button
         android:id="@+id/breakInsert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
         android:text="Insert break"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/addActivity"
-        app:layout_constraintTop_toBottomOf="@id/frame2Id"
-         />
+        app:layout_constraintTop_toBottomOf="@id/frame1Id" />
 
     <Button
         android:id="@+id/addActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
         android:text="Add New Activity"
         app:layout_constraintEnd_toStartOf="@+id/breakInsert"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frame2Id"
 
-        />
+        app:layout_constraintTop_toBottomOf="@id/frame1Id" />
 </androidx.constraintlayout.widget.ConstraintLayout>

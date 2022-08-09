@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/textView"
-        android:layout_width="215dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="28dp"
+        android:layout_width="66dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="60dp"
         android:text="Select category"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,19 +20,20 @@
         android:id="@+id/spinner"
         android:layout_width="208dp"
         android:layout_height="48dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:text="Note:"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
@@ -39,6 +41,7 @@
         android:id="@+id/eTNote"
         android:layout_width="261dp"
         android:layout_height="102dp"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,56 +52,60 @@
         android:id="@+id/tvStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:text="Start"
+        android:layout_marginTop="24dp"
+        android:text="Start time: "
+        app:layout_constraintEnd_toStartOf="@+id/pickStartTimeId"
+        app:layout_constraintHorizontal_bias="0.71"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eTNote"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSwitchConsecutive" />
 
-    <Button
+    <ImageView
         android:id="@+id/pickStartTimeId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="52dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
         android:text="pick_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.131"
+        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvStart" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSwitchConsecutive"
+        app:srcCompat="@drawable/ic_twotone_schedule_24" />
 
 
     <TextView
         android:id="@+id/tvStartNumbersId"
         android:layout_width="73dp"
         android:layout_height="37dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="21dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintHorizontal_bias="0.278"
         app:layout_constraintStart_toEndOf="@id/pickStartTimeId"
-        app:layout_constraintTop_toBottomOf="@+id/tvStart" />
+        app:layout_constraintTop_toBottomOf="@+id/tvSwitchConsecutive" />
 
     <TextView
         android:id="@+id/tvEnd"
-        android:layout_width="78dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="32dp"
-        android:text="End"
+        android:layout_width="69dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
+        android:text="End time: "
+        app:layout_constraintEnd_toStartOf="@+id/pickEndTimeId"
+        app:layout_constraintHorizontal_bias="0.611"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pickStartTimeId" />
+        app:layout_constraintTop_toBottomOf="@+id/tvStart" />
 
-    <Button
+    <ImageView
         android:id="@+id/pickEndTimeId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="51dp"
+        android:layout_height="52dp"
         android:layout_marginTop="12dp"
         android:text="pick_time2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEnd" />
-
+        app:layout_constraintTop_toBottomOf="@+id/pickStartTimeId"
+        app:srcCompat="@drawable/ic_twotone_schedule_24" />
 
     <TextView
         android:id="@+id/tvEndTimeNumbersId"
@@ -107,9 +114,9 @@
         android:layout_marginTop="24dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.594"
-        app:layout_constraintStart_toEndOf="@id/pickStartTimeId"
-        app:layout_constraintTop_toBottomOf="@+id/tvEnd" />
+        app:layout_constraintHorizontal_bias="0.278"
+        app:layout_constraintStart_toEndOf="@+id/pickEndTimeId"
+        app:layout_constraintTop_toBottomOf="@+id/pickStartTimeId" />
 
     <Button
         android:id="@+id/btnFinish"
@@ -118,8 +125,30 @@
         android:text="Finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.455"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pickEndTimeId" />
+        app:layout_constraintTop_toBottomOf="@+id/pickEndTimeId"
+        app:layout_constraintVertical_bias="0.312" />
+
+    <Switch
+        android:id="@+id/switchConsecutiveActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:layout_marginEnd="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eTNote" />
+
+    <TextView
+        android:id="@+id/tvSwitchConsecutive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="4dp"
+        android:text="One activity at the chosen time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eTNote" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

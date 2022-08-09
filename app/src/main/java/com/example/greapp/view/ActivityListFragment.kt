@@ -24,7 +24,7 @@ class ActivityListFragment() : Fragment() {
         val view = inflater.inflate(R.layout.activity_list_fragment, container, false)
         activityRV = view.findViewById(R.id.lvActivitiesID)
 
-        adapter = ActivityListAdapter(listOf())
+        adapter = activity?.let { ActivityListAdapter(listOf(), it) }!!
         activityRV.adapter = adapter
 
         val linearLayoutManager = LinearLayoutManager(requireContext())

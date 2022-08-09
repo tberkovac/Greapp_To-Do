@@ -41,6 +41,13 @@ class DailyActivityRepository {
             }
         }
 
+        suspend fun updateTimes(time : Long, start: Long, end: Long){
+            return withContext(Dispatchers.IO){
+                val db = GreappDB.getInstance(mcontext)
+                return@withContext db.dailyActivityDao().update(time, start, end)
+            }
+        }
+
         suspend fun deleteActivity(activity: DailyActivity) {
             return withContext(Dispatchers.IO){
                 val db = GreappDB.getInstance(mcontext)

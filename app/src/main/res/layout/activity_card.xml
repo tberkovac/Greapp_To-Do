@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="170dp"
     android:layout_marginEnd="16dp"
     android:layout_marginStart="16dp">
 
@@ -11,10 +11,10 @@
         android:id="@+id/labelaNazivId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="Current activity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.168"
+        app:layout_constraintHorizontal_bias="0.262"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,37 +23,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="aktivnost ta i ta"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/noteHomeTV"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.338"
+        app:layout_constraintHorizontal_bias="0.168"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelaNazivId"
-        app:layout_constraintVertical_bias="0.652" />
+        app:layout_constraintVertical_bias="0.353" />
 
     <TextView
-        android:id="@+id/sati"
+        android:id="@+id/tvSatiIMinuteId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:text="sati"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/minute"
+        android:layout_marginStart="28dp"
+        android:text="sati i minute"
+        app:layout_constraintBottom_toTopOf="@+id/noteHomeTV"
         app:layout_constraintStart_toEndOf="@+id/trenutnaId"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.802" />
+        app:layout_constraintVertical_bias="0.793" />
 
     <TextView
-        android:id="@+id/minute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="minute"
+        android:id="@+id/noteHomeTV"
+        android:layout_width="291dp"
+        android:layout_height="46dp"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toEndOf="@+id/sati"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.802" />
-
+        app:layout_constraintVertical_bias="0.62"
+        tools:layout_editor_absoluteX="66dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
