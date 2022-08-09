@@ -43,13 +43,13 @@ class ActivityListAdapter(
             if(currActivity.markedFinishedTime == null && currActivity.startTime.before(Calendar.getInstance().time)) {
                 val id = activities[position].id
                 dailyActivityViewModel.activityDoneUpdate(id)
-                dailyActivityViewModel.getActivities(::updateActivities)
+                dailyActivityViewModel.getTodaysActivities(::updateActivities)
             }
         }
 
         holder.ivTrash.setOnClickListener {
             dailyActivityViewModel.deleteActivity(currActivity)
-            dailyActivityViewModel.getActivities(::updateActivities)
+            dailyActivityViewModel.getTodaysActivities(::updateActivities)
         }
         if(currActivity.markedFinishedTime != null) {
             if (currActivity.markedFinishedTime!!.before(currActivity.expectedEndTime)

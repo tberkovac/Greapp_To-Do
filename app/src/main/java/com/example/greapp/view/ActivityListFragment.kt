@@ -31,7 +31,7 @@ class ActivityListFragment() : Fragment() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         activityRV.layoutManager = linearLayoutManager
 
-        dailyActivityViewModel.getActivities(::onSuccessGetActivities)
+        dailyActivityViewModel.getTodaysActivities(::onSuccessGetActivities)
 
         return view
     }

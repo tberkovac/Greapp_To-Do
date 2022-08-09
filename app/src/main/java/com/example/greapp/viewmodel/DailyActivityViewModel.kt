@@ -6,6 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KFunction1
 
@@ -22,6 +23,16 @@ class DailyActivityViewModel {
         scope.launch {
             val activites = DailyActivityRepository.getAllActivities()
             onSuccess.invoke(activites)
+        }
+    }
+
+    fun getTodaysActivities(onSuccess: (List<DailyActivity>)-> Unit){
+        scope.launch {
+            val todayDate = Calendar.getInstance().time
+            val simpleDateFormat = SimpleDateFormat("ddmmYYYY")
+            var activities = DailyActivityRepository.getAllActivities()
+            activities = activities.filter { simpleDateFormat.format(it.startTime).equals(simpleDateFormat.format(todayDate)) }
+            onSuccess.invoke(activities)
         }
     }
 
