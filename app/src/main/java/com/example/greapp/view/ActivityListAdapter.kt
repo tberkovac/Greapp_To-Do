@@ -16,12 +16,11 @@ import com.example.greapp.models.DailyActivity
 import com.example.greapp.viewmodel.DailyActivityViewModel
 import java.util.*
 
-class ActivityListAdapter(
-    private var activities : List<DailyActivity>,
-    private var mActivity: Activity):
+class ActivityListAdapter(private var mActivity: Activity) :
     RecyclerView.Adapter<ActivityListAdapter.ActivityViewHolder>() {
 
-    private val dailyActivityViewModel = DailyActivityViewModel()
+    private var activities : List<DailyActivity> = listOf()
+    private var dailyActivityViewModel = DailyActivityViewModel()
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var naziv : TextView = itemView.findViewById(R.id.name)
@@ -41,10 +40,10 @@ class ActivityListAdapter(
         holder.startText.text = activities[position].startTime?.let { formatirajDatum(it) }
         holder.endText.text = activities[position].expectedEndTime?.let { formatirajDatum(it) }
 
-        var currActivity = activities[position]
+        var selectedActivity = activities[position]
 
         holder.ivDone.setOnClickListener {
-            if(currActivity.markedFinishedTime == null && currActivity.startTime?.before(Calendar.getInstance().time) == true) {
+            if(selectedActivity.markedFinishedTime == null && selectedActivity.startTime?.before(Calendar.getInstance().time) == true) {
                 val id = activities[position].id
                 dailyActivityViewModel.activityDoneUpdate(id)
                 dailyActivityViewModel.getTodaysActivities(::updateActivities)
@@ -52,7 +51,7 @@ class ActivityListAdapter(
         }
 
         holder.ivTrash.setOnClickListener {
-            dailyActivityViewModel.deleteActivity(currActivity)
+            dailyActivityViewModel.deleteActivity(selectedActivity)
             dailyActivityViewModel.getTodaysActivities(::updateActivities)
         }
 
@@ -63,7 +62,7 @@ class ActivityListAdapter(
 
             TimePickerDialog(
                 mActivity,
-                { timePicker, i, i2 -> obracunajIPostaviNovaVremena(currActivity, i, i2) },
+                { timePicker, i, i2 -> obracunajIPostaviNovaVremena(selectedActivity, i, i2) },
                 hour,
                 minute,
                 DateFormat.is24HourFormat(mActivity)
@@ -71,12 +70,12 @@ class ActivityListAdapter(
                 .show()
         }
 
-        if(currActivity.markedFinishedTime != null) {
-            if (currActivity.markedFinishedTime!!.before(currActivity.expectedEndTime)
-                && currActivity.markedFinishedTime!!.after(currActivity.startTime)
+        if(selectedActivity.markedFinishedTime != null) {
+            if (selectedActivity.markedFinishedTime!!.before(selectedActivity.expectedEndTime)
+                && selectedActivity.markedFinishedTime!!.after(selectedActivity.startTime)
             ) {
                 holder.itemView.setBackgroundColor(Color.parseColor("#cefad0"))
-            }else if( currActivity.markedFinishedTime!!.after(currActivity.expectedEndTime)){
+            }else if( selectedActivity.markedFinishedTime!!.after(selectedActivity.expectedEndTime)){
                 holder.itemView.setBackgroundColor(Color.parseColor("#fffbc8"))
             }
         }
@@ -100,16 +99,18 @@ class ActivityListAdapter(
         dailyActivityViewModel.getTodaysActivities(::updateActivities)
     }
 
-    override fun getItemCount(): Int {
-        return activities.size
-    }
 
-    fun updateActivities(act : List<DailyActivity>){
-        activities = act
+
+    fun updateActivities(updatedActivities : List<DailyActivity>){
+        activities = updatedActivities
         notifyDataSetChanged()
     }
 
     private fun formatirajDatum(date : Date) : String {
         return SimpleDateFormat("HH:mm").format(date)
+    }
+
+    override fun getItemCount(): Int {
+        return activities.size
     }
 }

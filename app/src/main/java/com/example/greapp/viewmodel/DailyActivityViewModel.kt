@@ -1,21 +1,32 @@
 package com.example.greapp.viewmodel
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.greapp.models.DailyActivity
 import com.example.greapp.repositories.DailyActivityRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.reflect.KFunction1
 
-class DailyActivityViewModel {
+class DailyActivityViewModel : ViewModel() {
     val scope = CoroutineScope(Job() + Dispatchers.Main)
+
+    val todaysActivities: MutableLiveData<List<DailyActivity>> by lazy {
+        MutableLiveData<List<DailyActivity>>()
+    }
+
+    val currentActivity: MutableLiveData<DailyActivity?> by lazy {
+        MutableLiveData()
+    }
 
     fun writeActivity (activity: DailyActivity) {
         scope.launch {
             DailyActivityRepository.writeActivity(activity)
+            todaysActivities.value = DailyActivityRepository.getTodaysActivities()
+            currentActivity.value = DailyActivityRepository.getCurrentActivity()
         }
     }
 
@@ -28,26 +39,15 @@ class DailyActivityViewModel {
 
     fun getTodaysActivities(onSuccess: (List<DailyActivity>)-> Unit){
         scope.launch {
-            val todayDate = Calendar.getInstance().time
-            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
-            var activities = DailyActivityRepository.getAllActivities()
-            activities = activities.filter { it.startTime?.let { it1 -> simpleDateFormat.format(it1).equals(simpleDateFormat.format(todayDate)) } ?:false }
+            val activities = DailyActivityRepository.getTodaysActivities()
             onSuccess.invoke(activities)
         }
     }
 
     fun getCurrentActivity(onSuccess: (DailyActivity?)->Unit){
         scope.launch {
-            val todayDate = Calendar.getInstance().time
-            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy")
-            var activities = DailyActivityRepository.getAllActivities()
-            activities = activities.filter {
-                it.startTime?.let { it1 ->
-                    simpleDateFormat.format(it1).equals(simpleDateFormat.format(todayDate))
-                } ?: false
-            }.filter { it.startTime?.before(todayDate) ?: false && it.expectedEndTime?.after(todayDate) ?: false }
-
-            var rez = if(activities.isEmpty()) null else activities[0]
+            val rez = DailyActivityRepository.getCurrentActivity()
+            currentActivity.value = rez
             onSuccess.invoke(rez)
         }
     }
@@ -55,18 +55,25 @@ class DailyActivityViewModel {
     fun activityDoneUpdate(id: Int) {
         scope.launch {
             DailyActivityRepository.activityDoneUpdate(Calendar.getInstance().time,id)
+            todaysActivities.value = DailyActivityRepository.getTodaysActivities()
+            currentActivity.value = DailyActivityRepository.getCurrentActivity()
         }
     }
 
     fun updateActivities(time: Long, start: Long, end: Long) {
         scope.launch {
             DailyActivityRepository.updateTimes(time, start, end)
+            todaysActivities.value = DailyActivityRepository.getTodaysActivities()
+            currentActivity.value = DailyActivityRepository.getCurrentActivity()
+
         }
     }
 
     fun deleteActivity(activity: DailyActivity) {
         scope.launch {
             DailyActivityRepository.deleteActivity(activity)
+            todaysActivities.value = DailyActivityRepository.getTodaysActivities()
+            currentActivity.value = DailyActivityRepository.getCurrentActivity()
         }
     }
 }

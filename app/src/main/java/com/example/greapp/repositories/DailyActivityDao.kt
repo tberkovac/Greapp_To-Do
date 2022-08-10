@@ -23,7 +23,4 @@ interface DailyActivityDao {
     @Delete
     fun delete (activity: DailyActivity)
 
-
-
-
 }
