@@ -2,16 +2,16 @@ package com.example.greapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import androidx.activity.viewModels
-import androidx.core.view.get
-import androidx.viewpager.widget.ViewPager
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.viewpager2.widget.ViewPager2
+import androidx.work.*
 import com.example.greapp.repositories.DailyActivityRepository
 import com.example.greapp.view.ViewPagerAdapter
-import com.example.greapp.viewmodel.DailyActivityViewModel
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import com.example.greapp.view.HomeFragment
+import com.example.greapp.repositories.AllTimeActivityRepository
+import com.example.greapp.repositories.SendWorker
+import com.example.greapp.viewmodel.SendToAllTimeViewModel
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewPager2: ViewPager2
@@ -24,21 +24,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         DailyActivityRepository.setContext(this)
+        AllTimeActivityRepository.setContext(this)
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPager2 = findViewById(R.id.viewPagerId)
 
         viewPager2.adapter = viewPagerAdapter
-/*
-        viewPager2.registerOnPageChangeCallback(
-            object : ViewPager2.OnPageChangeCallback(){
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    if(position == 0 ){
 
-                    }
-                }
-            }
-        )
-*/
+
+        val workReq = PeriodicWorkRequestBuilder<SendWorker>(24,
+            TimeUnit.HOURS, 1, TimeUnit.HOURS).build()
+
+        WorkManager.getInstance(application).enqueueUniquePeriodicWork("SendWorker", ExistingPeriodicWorkPolicy.REPLACE,workReq)
+
+
     }
 }

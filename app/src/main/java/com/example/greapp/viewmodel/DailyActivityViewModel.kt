@@ -40,6 +40,7 @@ class DailyActivityViewModel : ViewModel() {
     fun getTodaysActivities(onSuccess: (List<DailyActivity>)-> Unit){
         scope.launch {
             val activities = DailyActivityRepository.getTodaysActivities()
+            todaysActivities.value = activities
             onSuccess.invoke(activities)
         }
     }
@@ -65,7 +66,6 @@ class DailyActivityViewModel : ViewModel() {
             DailyActivityRepository.updateTimes(time, start, end)
             todaysActivities.value = DailyActivityRepository.getTodaysActivities()
             currentActivity.value = DailyActivityRepository.getCurrentActivity()
-
         }
     }
 

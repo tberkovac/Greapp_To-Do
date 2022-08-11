@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.greapp.MainActivity
 import com.example.greapp.R
+import com.example.greapp.viewmodel.DailyActivityViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var frameLayout : FrameLayout
     private lateinit var addActivityButton: Button
+    private val dailyActivityViewModel : DailyActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,11 +26,12 @@ class HomeFragment : Fragment() {
         frameLayout = view.findViewById(R.id.frame1Id)
         addActivityButton = view.findViewById(R.id.addActivity)
         loadFragment(R.id.frame1Id, CardFragment())
-
+        dailyActivityViewModel.getTodaysActivities { }
         addActivityButton.setOnClickListener{
             MainActivity.viewPagerAdapter.removeAllAndAdd(AddActivityFragment())
             MainActivity.viewPagerAdapter.notifyDataSetChanged()
         }
+
         return view
     }
 

@@ -3,19 +3,23 @@ package com.example.greapp.view
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.greapp.MainActivity
 import com.example.greapp.R
 import com.example.greapp.models.DailyActivity
 import com.example.greapp.models.TimeHM
 import com.example.greapp.viewmodel.DailyActivityViewModel
 import java.util.*
+import androidx.lifecycle.Observer
 
-class AddActivityFragment : Fragment() {
+
+class AddActivityFragment() : Fragment() {
     private lateinit var spinnerCategory: Spinner
     private lateinit var switch: Switch
     private lateinit var note : EditText
@@ -27,7 +31,8 @@ class AddActivityFragment : Fragment() {
     private lateinit var endTime : TimeHM
     private lateinit var finish : Button
     private var timeActivity = false
-    private var dailyActivityViewModel = DailyActivityViewModel()
+    private val dailyActivityViewModel : DailyActivityViewModel by activityViewModels()
+    var t = listOf<DailyActivity>()
 
 
     override fun onCreateView(
@@ -47,6 +52,11 @@ class AddActivityFragment : Fragment() {
 
         btnStartTime.isEnabled = false
         btnEndTime.isEnabled = false
+
+        val todaysActivitiesObserver = Observer<List<DailyActivity>> { activities ->
+           t = activities
+        }
+        dailyActivityViewModel.todaysActivities.observe(viewLifecycleOwner, todaysActivitiesObserver)
 
         val podaci = listOf("Studying", "Eating", "Journaling", "Exercise", "Religious activity", "Friends & Family", "Self-care")
         var spinnerAdapter = ArrayAdapter<String> (
@@ -106,8 +116,22 @@ class AddActivityFragment : Fragment() {
                 cal2.set(Calendar.MINUTE, endTime.minutes)
                 val endDate : Date = cal2.time
 
-                val newActivity = DailyActivity(spinnerCategory.selectedItem.toString(), note.text.toString(), startDate,endDate, null)
-                dailyActivityViewModel.writeActivity(newActivity)
+                if(!checkIfIsNotTaken( startDate, endDate)){
+                    //dodati i alert dialog s mogucnoscu odabira without time
+                    tvEndTime.text = ""
+                    tvStartTime.text = ""
+                    switch.isEnabled = false
+                    Toast.makeText(context,"There is already activity during selected time", Toast.LENGTH_LONG).show()
+                }else {
+                    val newActivity = DailyActivity(
+                        spinnerCategory.selectedItem.toString(),
+                        note.text.toString(),
+                        startDate,
+                        endDate,
+                        null
+                    )
+                    dailyActivityViewModel.writeActivity(newActivity)
+                }
             }else{
                 val newActivity = DailyActivity(spinnerCategory.selectedItem.toString(), note.text.toString(), null, null, null)
                 dailyActivityViewModel.writeActivity(newActivity)
@@ -119,14 +143,30 @@ class AddActivityFragment : Fragment() {
         return view
     }
 
-    fun postaviITextView (hours : Int, minutes:Int) {
+    private fun postaviITextView (hours : Int, minutes:Int) {
         startTime = TimeHM(hours,minutes)
         tvStartTime.text = "$hours : $minutes"
     }
 
-    fun postaviITextViewEnd (hours : Int, minutes:Int) {
+    private fun postaviITextViewEnd (hours : Int, minutes:Int) {
         endTime = TimeHM(hours,minutes)
         tvEndTime.text = "$hours : $minutes"
+    }
+
+    private fun checkIfIsNotTaken(
+        dateStart: Date,
+        dateEnd: Date
+    ) : Boolean {
+        t.forEach {
+            if (dateStart.before(it.startTime) && dateEnd.before(it.startTime)
+                || dateStart.after(it.expectedEndTime) && dateEnd.after(it.expectedEndTime)
+            ) {
+                Log.v(dateStart.toString(), it.startTime.toString())
+            } else {
+                return false
+            }
+        }
+        return true
     }
 
 }

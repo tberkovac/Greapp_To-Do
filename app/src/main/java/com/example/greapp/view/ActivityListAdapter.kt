@@ -16,11 +16,10 @@ import com.example.greapp.models.DailyActivity
 import com.example.greapp.viewmodel.DailyActivityViewModel
 import java.util.*
 
-class ActivityListAdapter(private var mActivity: Activity) :
+class ActivityListAdapter(private val dailyActivityViewModel: DailyActivityViewModel, private var mActivity: Activity) :
     RecyclerView.Adapter<ActivityListAdapter.ActivityViewHolder>() {
 
     private var activities : List<DailyActivity> = listOf()
-    private var dailyActivityViewModel = DailyActivityViewModel()
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var naziv : TextView = itemView.findViewById(R.id.name)
@@ -99,10 +98,9 @@ class ActivityListAdapter(private var mActivity: Activity) :
         dailyActivityViewModel.getTodaysActivities(::updateActivities)
     }
 
-
-
     fun updateActivities(updatedActivities : List<DailyActivity>){
         activities = updatedActivities
+        activities = activities.sortedBy { it.startTime }
         notifyDataSetChanged()
     }
 

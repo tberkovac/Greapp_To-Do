@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.greapp.models.DailyActivity
+import com.example.greapp.models.AllTimeActivity
 
-@Database (entities = arrayOf(DailyActivity::class), version = 2)
+@Database (entities = arrayOf(DailyActivity::class, AllTimeActivity::class), version = 3)
 @TypeConverters(DateConverter::class)
 abstract class GreappDB : RoomDatabase() {
     abstract fun dailyActivityDao() : DailyActivityDao
+    abstract fun allTimeActivityDao() : AllTimeActivityDao
 
     companion object {
         private var INSTANCE: GreappDB? = null

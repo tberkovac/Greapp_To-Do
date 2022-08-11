@@ -17,10 +17,18 @@ interface DailyActivityDao {
             " WHERE startTime BETWEEN :start AND :end")
     fun update(time : Long, start: Long, end: Long)
 
+    @Query("UPDATE DailyActivity SET startTime = startTime + :time, expectedEndTime = expectedEndTime + :time" +
+            " WHERE startTime BETWEEN :start AND :end")
+    fun updateOnStartTime(time : Long, start: Long, end: Long)
+
     @Insert
     fun insert (vararg dailyActivity: DailyActivity)
 
     @Delete
     fun delete (activity: DailyActivity)
+
+    @Query("DELETE FROM AllTimeActivity WHERE expectedEndTime BETWEEN :first - 86400000 AND :first")
+    fun deleteYesterdays(first: Long)
+
 
 }
