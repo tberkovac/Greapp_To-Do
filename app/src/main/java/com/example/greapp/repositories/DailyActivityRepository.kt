@@ -1,6 +1,7 @@
 package com.example.greapp.repositories
 
 import android.content.Context
+import android.util.Log
 import com.example.greapp.models.DailyActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -32,6 +33,25 @@ class DailyActivityRepository {
             return withContext(Dispatchers.IO) {
                 val db = GreappDB.getInstance(mcontext)
                 return@withContext db.dailyActivityDao().getAll()
+            }
+        }
+
+
+
+        suspend fun getYesterdays() : List<DailyActivity> {
+            return withContext(Dispatchers.IO) {
+                val cal = Calendar.getInstance()
+                cal.set(Calendar.HOUR_OF_DAY, 0)
+                cal.set(Calendar.MINUTE, 0)
+                cal.set(Calendar.SECOND, 0)
+                Log.v("JUCER navecer", cal.time.time.toString())
+                Log.v("JUCER ujutro", (cal.time.time-86400000).toString())
+
+                val date = cal.time
+                val db = GreappDB.getInstance(mcontext)
+
+                db.allTimeActivityDao().populateForYesterday(date.time)
+                return@withContext db.dailyActivityDao().getYesterdays(date.time)
             }
         }
 

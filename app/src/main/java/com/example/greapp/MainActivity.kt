@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity() {
         viewPager2.adapter = viewPagerAdapter
 
 
-        val workReq = PeriodicWorkRequestBuilder<SendWorker>(24,
-            TimeUnit.HOURS, 1, TimeUnit.HOURS).build()
+        val workReq = PeriodicWorkRequestBuilder<SendWorker>(15,
+            TimeUnit.MINUTES, 1, TimeUnit.MINUTES).build()
 
         WorkManager.getInstance(application).enqueueUniquePeriodicWork("SendWorker", ExistingPeriodicWorkPolicy.REPLACE,workReq)
 

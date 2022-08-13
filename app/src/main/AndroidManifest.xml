@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.greapp">
 
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Greapp"
         android:windowSoftInputMode="adjustResize">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

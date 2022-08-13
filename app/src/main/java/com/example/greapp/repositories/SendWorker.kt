@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 
@@ -22,14 +23,21 @@ class SendWorker(private var appContext: Context, workerParams: WorkerParameters
             cal.set(Calendar.SECOND, 0)
 
             val date = cal.time
-22
+
             try {
                 val db = GreappDB.getInstance(appContext)
                 val dailySize = db.dailyActivityDao().getAll().size
                 val allTimeSize = db.allTimeActivityDao().getAll().size
                 Log.v("BEFORESWITCH", "daily: " + dailySize.toString() + " and ALL: " + allTimeSize.toString())
-                db.allTimeActivityDao().populateForYesterday(date.time)
-                db.dailyActivityDao().deleteYesterdays(date.time)
+                val yesterdays = db.dailyActivityDao().getYesterdays(date.time)
+                launch {
+                    db.allTimeActivityDao().insertAll(yesterdays)
+                }.join()
+
+                launch {
+                    db.dailyActivityDao().deleteYesterdays(date.time)
+                }
+               // db.allTimeActivityDao().populateForYesterday(date.time)
                 val dailySize2 = db.dailyActivityDao().getAll().size
                 val allTimeSize2 = db.allTimeActivityDao().getAll().size
                 Log.v("AFTERSWITCH", "daily: " + dailySize2.toString() + " and ALL: " + allTimeSize2.toString())

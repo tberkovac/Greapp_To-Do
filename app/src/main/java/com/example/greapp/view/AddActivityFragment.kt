@@ -109,11 +109,15 @@ class AddActivityFragment() : Fragment() {
                 var cal = Calendar.getInstance()
                 cal.set(Calendar.HOUR_OF_DAY, startTime.hours)
                 cal.set(Calendar.MINUTE, startTime.minutes)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
                 val startDate : Date = cal.time
 
                 val cal2 = Calendar.getInstance()
                 cal2.set(Calendar.HOUR_OF_DAY, endTime.hours)
                 cal2.set(Calendar.MINUTE, endTime.minutes)
+                cal2.set(Calendar.SECOND, 0)
+                cal2.set(Calendar.MILLISECOND, 0)
                 val endDate : Date = cal2.time
 
                 if(!checkIfIsNotTaken( startDate, endDate)){

@@ -21,6 +21,9 @@ interface DailyActivityDao {
             " WHERE startTime BETWEEN :start AND :end")
     fun updateOnStartTime(time : Long, start: Long, end: Long)
 
+    @Query("SELECT * FROM DAILYACTIVITY  WHERE expectedEndTime BETWEEN :first - 86400000 AND :first")
+    fun getYesterdays(first: Long) : List<DailyActivity>
+
     @Insert
     fun insert (vararg dailyActivity: DailyActivity)
 

@@ -26,6 +26,10 @@ interface AllTimeActivityDao {
     @Insert
     fun insert (vararg allTimeActivity: AllTimeActivity)
 
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(objects: List<DailyActivity>)
+
     @Delete
     fun delete (allTimeActivity: AllTimeActivity)
 
