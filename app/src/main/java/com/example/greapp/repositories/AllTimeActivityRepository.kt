@@ -13,7 +13,6 @@ class AllTimeActivityRepository {
             mcontext = context
         }
 
-
         suspend fun addAllDaily(): String? {
             return withContext(Dispatchers.IO) {
                 try {

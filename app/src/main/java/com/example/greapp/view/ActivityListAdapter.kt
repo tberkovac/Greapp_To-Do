@@ -17,65 +17,100 @@ import com.example.greapp.viewmodel.DailyActivityViewModel
 import java.util.*
 
 class ActivityListAdapter(private val dailyActivityViewModel: DailyActivityViewModel, private var mActivity: Activity) :
-    RecyclerView.Adapter<ActivityListAdapter.ActivityViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
     private var activities : List<DailyActivity> = listOf()
+    private val TIME_ACTIVITY = 0
+    private val NO_TIME_ACTIVITY = 1
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var naziv : TextView = itemView.findViewById(R.id.name)
         var startText : TextView = itemView.findViewById(R.id.start)
         var endText : TextView = itemView.findViewById(R.id.end)
-        var ivDone : ImageView = itemView.findViewById(R.id.done)
-        var ivTrash : ImageView = itemView.findViewById(R.id.trash)
+        var ivDone : ImageView = itemView.findViewById(R.id.done2)
+        var ivTrash : ImageView = itemView.findViewById(R.id.trash2)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.lwacard, parent, false)
-        return ActivityViewHolder(view)
+    override fun getItemViewType(position: Int): Int {
+        val act : DailyActivity = activities[position]
+        if(act.startTime == null) return 1
+        return 0
     }
 
-    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.naziv.text = activities[position].name
-        holder.startText.text = activities[position].startTime?.let { formatirajDatum(it) }
-        holder.endText.text = activities[position].expectedEndTime?.let { formatirajDatum(it) }
+    inner class NoTimeActivityViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        var naziv2 : TextView = itemView.findViewById(R.id.name3)
+        var ivDone2 : ImageView = itemView.findViewById(R.id.done3)
+        var ivTrash2 : ImageView = itemView.findViewById(R.id.trash3)
+    }
 
-        var selectedActivity = activities[position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val view : View
+        if(viewType == TIME_ACTIVITY){
+            view = LayoutInflater.from(parent.context).inflate(R.layout.lwacard, parent, false)
+            return ActivityViewHolder(view)
+        }else{
+            view = LayoutInflater.from(parent.context).inflate(R.layout.rwno_time_activity_card, parent, false)
+            return NoTimeActivityViewHolder(view)
+        }
+    }
 
-        holder.ivDone.setOnClickListener {
-            if(selectedActivity.markedFinishedTime == null && selectedActivity.startTime?.before(Calendar.getInstance().time) == true) {
-                val id = activities[position].id
-                dailyActivityViewModel.activityDoneUpdate(id)
-                dailyActivityViewModel.getTodaysActivities(::updateActivities)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val activity = activities[position]
+
+        if(activity.startTime == null){
+            (holder as NoTimeActivityViewHolder).naziv2.text = activity.name
+            holder.ivDone2.setOnClickListener {
+                dailyActivityViewModel.activityNoTimeDoneUpdate(activity.id)
             }
-        }
+            holder.ivTrash2.setOnClickListener {
+                dailyActivityViewModel.deleteNoTimeActivity(activity)
+            }
 
-        holder.ivTrash.setOnClickListener {
-            dailyActivityViewModel.deleteActivity(selectedActivity)
-            dailyActivityViewModel.getTodaysActivities(::updateActivities)
-        }
-
-        holder.endText.setOnClickListener {
-            val c = Calendar.getInstance()
-            val hour = c.get(Calendar.HOUR_OF_DAY)
-            val minute = c.get(Calendar.MINUTE)
-
-            TimePickerDialog(
-                mActivity,
-                { timePicker, i, i2 -> obracunajIPostaviNovaVremena(selectedActivity, i, i2) },
-                hour,
-                minute,
-                DateFormat.is24HourFormat(mActivity)
-            )
-                .show()
-        }
-
-        if(selectedActivity.markedFinishedTime != null) {
-            if (selectedActivity.markedFinishedTime!!.before(selectedActivity.expectedEndTime)
-                && selectedActivity.markedFinishedTime!!.after(selectedActivity.startTime)
-            ) {
+            if(activity.markedFinishedTime != null) {
                 holder.itemView.setBackgroundColor(Color.parseColor("#cefad0"))
-            }else if( selectedActivity.markedFinishedTime!!.after(selectedActivity.expectedEndTime)){
-                holder.itemView.setBackgroundColor(Color.parseColor("#fffbc8"))
+            }
+        }else{
+            (holder as ActivityViewHolder).naziv.text = activities[position].name
+            holder.startText.text = activities[position].startTime?.let { formatirajDatum(it) }
+            holder.endText.text = activities[position].expectedEndTime?.let { formatirajDatum(it) }
+
+            var selectedActivity = activities[position]
+
+            holder.ivDone.setOnClickListener {
+                if(selectedActivity.markedFinishedTime == null && selectedActivity.startTime?.before(Calendar.getInstance().time) == true) {
+                    val id = activities[position].id
+                    dailyActivityViewModel.activityDoneUpdate(id)
+                    dailyActivityViewModel.getTodaysActivities()
+                }
+            }
+
+            holder.ivTrash.setOnClickListener {
+                dailyActivityViewModel.deleteActivity(selectedActivity)
+                notifyDataSetChanged()
+            }
+
+            holder.endText.setOnClickListener {
+                val c = Calendar.getInstance()
+                val hour = c.get(Calendar.HOUR_OF_DAY)
+                val minute = c.get(Calendar.MINUTE)
+
+                TimePickerDialog(
+                    mActivity,
+                    { timePicker, i, i2 -> obracunajIPostaviNovaVremena(selectedActivity, i, i2) },
+                    hour,
+                    minute,
+                    DateFormat.is24HourFormat(mActivity)
+                ).show()
+            }
+
+            if(selectedActivity.markedFinishedTime != null) {
+                if (selectedActivity.markedFinishedTime!!.before(selectedActivity.expectedEndTime)
+                    && selectedActivity.markedFinishedTime!!.after(selectedActivity.startTime)
+                ) {
+                    holder.itemView.setBackgroundColor(Color.parseColor("#cefad0"))
+                }else if( selectedActivity.markedFinishedTime!!.after(selectedActivity.expectedEndTime)){
+                    holder.itemView.setBackgroundColor(Color.parseColor("#fffbc8"))
+                }
             }
         }
     }
@@ -95,7 +130,7 @@ class ActivityListAdapter(private val dailyActivityViewModel: DailyActivityViewM
         cal.set(Calendar.SECOND, 59)
 
         dailyActivityViewModel.updateActivities(diff, currActivity.startTime!!.time, cal.timeInMillis)
-        dailyActivityViewModel.getTodaysActivities(::updateActivities)
+        dailyActivityViewModel.getTodaysActivities()
     }
 
     fun updateActivities(updatedActivities : List<DailyActivity>){

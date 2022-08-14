@@ -1,7 +1,6 @@
 package com.example.greapp.view
 
 import android.os.Bundle
-import android.os.PowerManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +20,6 @@ class HomeFragment : Fragment() {
     private lateinit var frameLayout : FrameLayout
     private lateinit var addActivityButton: Button
     private lateinit var breakBtn : Button
-    private var wakeLock : PowerManager.WakeLock? = null
     private val dailyActivityViewModel : DailyActivityViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -34,7 +32,7 @@ class HomeFragment : Fragment() {
         addActivityButton = view.findViewById(R.id.addActivity)
         breakBtn = view.findViewById(R.id.breakInsert)
         loadFragment(R.id.frame1Id, CardFragment())
-        dailyActivityViewModel.getTodaysActivities { }
+        dailyActivityViewModel.getTodaysActivities()
         addActivityButton.setOnClickListener{
             MainActivity.viewPagerAdapter.removeAllAndAdd(AddActivityFragment())
             MainActivity.viewPagerAdapter.notifyDataSetChanged()

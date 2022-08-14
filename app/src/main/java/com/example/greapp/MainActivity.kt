@@ -2,15 +2,12 @@ package com.example.greapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import androidx.viewpager2.widget.ViewPager2
 import androidx.work.*
 import com.example.greapp.repositories.DailyActivityRepository
 import com.example.greapp.view.ViewPagerAdapter
 import com.example.greapp.repositories.AllTimeActivityRepository
 import com.example.greapp.repositories.SendWorker
-import com.example.greapp.viewmodel.SendToAllTimeViewModel
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -31,11 +28,11 @@ class MainActivity : AppCompatActivity() {
         viewPager2.adapter = viewPagerAdapter
 
 
-        val workReq = PeriodicWorkRequestBuilder<SendWorker>(15,
-            TimeUnit.MINUTES, 1, TimeUnit.MINUTES).build()
+        val workReq = PeriodicWorkRequestBuilder<SendWorker>(24,
+            TimeUnit.HOURS, 5, TimeUnit.MINUTES).build()
 
-        WorkManager.getInstance(application).enqueueUniquePeriodicWork("SendWorker", ExistingPeriodicWorkPolicy.REPLACE,workReq)
-
+       // WorkManager.getInstance(application).cancelAllWork()
+        WorkManager.getInstance(application).enqueueUniquePeriodicWork("SendWorker", ExistingPeriodicWorkPolicy.KEEP,workReq)
 
     }
 }

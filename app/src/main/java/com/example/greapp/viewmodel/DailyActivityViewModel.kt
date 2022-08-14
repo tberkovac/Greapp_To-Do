@@ -18,9 +18,15 @@ class DailyActivityViewModel : ViewModel() {
         MutableLiveData<List<DailyActivity>>()
     }
 
+    val noTimeActivites: MutableLiveData<List<DailyActivity>> by lazy {
+        MutableLiveData<List<DailyActivity>>()
+    }
+
     val currentActivity: MutableLiveData<DailyActivity?> by lazy {
         MutableLiveData()
     }
+
+
 
     fun writeActivity (activity: DailyActivity) {
         scope.launch {
@@ -37,11 +43,17 @@ class DailyActivityViewModel : ViewModel() {
         }
     }
 
-    fun getTodaysActivities(onSuccess: (List<DailyActivity>)-> Unit){
+    fun getTodaysActivities() {
         scope.launch {
             val activities = DailyActivityRepository.getTodaysActivities()
             todaysActivities.value = activities
-            onSuccess.invoke(activities)
+        }
+    }
+
+    fun getNoTimeActivities(){
+        scope.launch {
+            val activities = DailyActivityRepository.getNoTimeActivities()
+            noTimeActivites.value = activities
         }
     }
 
@@ -61,6 +73,13 @@ class DailyActivityViewModel : ViewModel() {
         }
     }
 
+    fun activityNoTimeDoneUpdate(id: Int){
+        scope.launch {
+            DailyActivityRepository.activityDoneUpdate(Calendar.getInstance().time,id)
+            noTimeActivites.value = DailyActivityRepository.getNoTimeActivities()
+        }
+    }
+
     fun updateActivities(time: Long, start: Long, end: Long) {
         scope.launch {
             DailyActivityRepository.updateTimes(time, start, end)
@@ -74,6 +93,13 @@ class DailyActivityViewModel : ViewModel() {
             DailyActivityRepository.deleteActivity(activity)
             todaysActivities.value = DailyActivityRepository.getTodaysActivities()
             currentActivity.value = DailyActivityRepository.getCurrentActivity()
+        }
+    }
+
+    fun deleteNoTimeActivity(activity: DailyActivity) {
+        scope.launch {
+            DailyActivityRepository.deleteActivity(activity)
+            noTimeActivites.value = DailyActivityRepository.getNoTimeActivities()
         }
     }
 }

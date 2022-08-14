@@ -36,6 +36,13 @@ class DailyActivityRepository {
             }
         }
 
+        suspend fun getNoTimeActivities() : List<DailyActivity> {
+            return withContext(Dispatchers.IO) {
+                val db = GreappDB.getInstance(mcontext)
+                return@withContext db.dailyActivityDao().getNoTime()
+            }
+        }
+
 
 
         suspend fun getYesterdays() : List<DailyActivity> {

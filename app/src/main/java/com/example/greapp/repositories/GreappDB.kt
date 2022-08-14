@@ -29,6 +29,6 @@ abstract class GreappDB : RoomDatabase() {
                 context.applicationContext,
                 GreappDB::class.java,
                 "GreappDB"
-            ).fallbackToDestructiveMigration().build()
+            ).enableMultiInstanceInvalidation().fallbackToDestructiveMigration().build()
     }
 }

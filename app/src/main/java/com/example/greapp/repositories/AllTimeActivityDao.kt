@@ -18,17 +18,15 @@ interface AllTimeActivityDao {
     @Query("UPDATE AllTimeActivity SET markedFinishedTime = :time WHERE id = :id")
     fun update(id : Int, time: Date)
 
-    @Query(
-        "UPDATE AllTimeActivity SET startTime = startTime + :time, expectedEndTime = expectedEndTime + :time" +
-            " WHERE startTime BETWEEN :start AND :end")
+    @Query("""UPDATE AllTimeActivity SET startTime = startTime + :time, expectedEndTime = expectedEndTime + :time
+             WHERE startTime BETWEEN :start AND :end""")
     fun update(time : Long, start: Long, end: Long)
 
     @Insert
     fun insert (vararg allTimeActivity: AllTimeActivity)
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(objects: List<DailyActivity>)
+    fun insertAll(objects: List<AllTimeActivity>)
 
     @Delete
     fun delete (allTimeActivity: AllTimeActivity)
