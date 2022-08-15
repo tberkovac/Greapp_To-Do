@@ -28,5 +28,3 @@ Database is made with Room library
 
 WorkManager is always working in the background and each day it saves data for previous days to another table, and delete it from "main table" in which all 
 relevant data for Views is stored. It means that every day You work with brand new scheduled activities (not scheduled activities are not erased)
-
-H.S.'s idea
