@@ -4,14 +4,15 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_check_24.xml" value="0.251" />
-        <entry key="app/src/main/res/layout/activity_card.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/drawable/ic_twotone_schedule_24.xml" value="0.251" />
+        <entry key="app/src/main/res/layout/activity_card.xml" value="0.5036748250325521" />
         <entry key="app/src/main/res/layout/activity_list_fragment.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2953125" />
         <entry key="app/src/main/res/layout/add_activity_fragment.xml" value="0.311011250813802" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.3098958333333333" />
-        <entry key="app/src/main/res/layout/lwacard.xml" value="0.24258015950520836" />
+        <entry key="app/src/main/res/layout/lwacard.xml" value="0.4580617268880209" />
         <entry key="app/src/main/res/layout/next_card.xml" value="0.2953125" />
-        <entry key="app/src/main/res/layout/rwno_time_activity_card.xml" value="0.6697230021158854" />
+        <entry key="app/src/main/res/layout/rwno_time_activity_card.xml" value="0.39596273291925466" />
       </map>
     </option>
   </component>

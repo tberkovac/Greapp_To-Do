@@ -59,7 +59,7 @@ class CardFragment : Fragment() {
             tvHoursAndMinutes.text = ":))))"
         }else {
             tvNameOfActivity.text = dailyActivity.name
-            tvHoursAndMinutes.text = dtf.format(dailyActivity.expectedEndTime)
+            tvHoursAndMinutes.text = "until  " + dtf.format(dailyActivity.expectedEndTime)
             note.text = dailyActivity.note
 
             CoroutineScope(Dispatchers.IO).launch {

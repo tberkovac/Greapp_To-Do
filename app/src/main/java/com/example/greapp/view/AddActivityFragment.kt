@@ -27,8 +27,8 @@ class AddActivityFragment() : Fragment() {
     private lateinit var btnEndTime : ImageView
     private lateinit var tvStartTime : TextView
     private lateinit var tvEndTime : TextView
-    private lateinit var startTime : TimeHM
-    private lateinit var endTime : TimeHM
+    private var startTime = TimeHM(-1,-1)
+    private var endTime = TimeHM(-1,-1)
     private lateinit var finish : Button
     private var timeActivity = false
     private val dailyActivityViewModel : DailyActivityViewModel by activityViewModels()
@@ -106,6 +106,8 @@ class AddActivityFragment() : Fragment() {
 
         finish.setOnClickListener {
             if(timeActivity){
+
+
                 var cal = Calendar.getInstance()
                 cal.set(Calendar.HOUR_OF_DAY, startTime.hours)
                 cal.set(Calendar.MINUTE, startTime.minutes)
@@ -120,7 +122,9 @@ class AddActivityFragment() : Fragment() {
                 cal2.set(Calendar.MILLISECOND, 0)
                 val endDate : Date = cal2.time
 
-                if(!checkIfIsNotTaken( startDate, endDate)){
+                if(startTime.hours == -1 || endTime.hours == -1){
+                    Toast.makeText(context,"Please select both start and end time", Toast.LENGTH_LONG).show()
+                }else if (!checkIfIsNotTaken( startDate, endDate)){
                     //dodati i alert dialog s mogucnoscu odabira without time
                     tvEndTime.text = ""
                     tvStartTime.text = ""
@@ -140,9 +144,15 @@ class AddActivityFragment() : Fragment() {
                 val newActivity = DailyActivity(spinnerCategory.selectedItem.toString(), note.text.toString(), null, null, null)
                 dailyActivityViewModel.writeActivity(newActivity)
             }
-
-            MainActivity.viewPagerAdapter.addMultiple(listOf(HomeFragment(), ActivityListFragment()))
-            MainActivity.viewPagerAdapter.notifyDataSetChanged()
+            if(startTime.hours != -1 && endTime.hours != -1){
+                MainActivity.viewPagerAdapter.addMultiple(
+                    listOf(
+                        HomeFragment(),
+                        ActivityListFragment()
+                    )
+                )
+                MainActivity.viewPagerAdapter.notifyDataSetChanged()
+            }
         }
         return view
     }

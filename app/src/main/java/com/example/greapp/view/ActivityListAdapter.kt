@@ -4,10 +4,12 @@ import android.app.Activity
 import android.app.TimePickerDialog
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
+import android.text.Layout
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +31,7 @@ class ActivityListAdapter(private val dailyActivityViewModel: DailyActivityViewM
         var endText : TextView = itemView.findViewById(R.id.end)
         var ivDone : ImageView = itemView.findViewById(R.id.done2)
         var ivTrash : ImageView = itemView.findViewById(R.id.trash2)
+        var note : TextView = itemView.findViewById(R.id.note2)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -41,6 +44,7 @@ class ActivityListAdapter(private val dailyActivityViewModel: DailyActivityViewM
         var naziv2 : TextView = itemView.findViewById(R.id.name3)
         var ivDone2 : ImageView = itemView.findViewById(R.id.done3)
         var ivTrash2 : ImageView = itemView.findViewById(R.id.trash3)
+        var note3 : TextView = itemView.findViewById(R.id.note3)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -59,6 +63,7 @@ class ActivityListAdapter(private val dailyActivityViewModel: DailyActivityViewM
 
         if(activity.startTime == null){
             (holder as NoTimeActivityViewHolder).naziv2.text = activity.name
+            holder.note3.text = activity.note
             holder.ivDone2.setOnClickListener {
                 dailyActivityViewModel.activityNoTimeDoneUpdate(activity.id)
             }
@@ -83,6 +88,8 @@ class ActivityListAdapter(private val dailyActivityViewModel: DailyActivityViewM
                     dailyActivityViewModel.getTodaysActivities()
                 }
             }
+
+            holder.note.text = activities[position].note
 
             holder.ivTrash.setOnClickListener {
                 dailyActivityViewModel.deleteActivity(selectedActivity)
