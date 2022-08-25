@@ -1,4 +1,8 @@
 The application is To-Do app and is still being developed.
+
+Published on Play store : https://play.google.com/store/apps/details?id=com.tberkovac.greapp
+
+
 On the first fragment you will see your current activity and time when that activity is expected to be finished.
 <p align="middle">
   <img src="https://user-images.githubusercontent.com/92406137/184719891-72ced0b7-c355-4ab7-a047-1d0c507a8dac.jpg" width=300px height=600px>
