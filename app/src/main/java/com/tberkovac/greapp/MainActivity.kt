@@ -25,11 +25,11 @@ class MainActivity : AppCompatActivity() {
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPager2 = findViewById(R.id.viewPagerId)
 
-        viewPager2.adapter = com.tberkovac.greapp.MainActivity.Companion.viewPagerAdapter
+        viewPager2.adapter = viewPagerAdapter
 
 
-        val workReq = PeriodicWorkRequestBuilder<SendWorker>(24,
-            TimeUnit.HOURS, 5, TimeUnit.MINUTES).build()
+        val workReq = PeriodicWorkRequestBuilder<SendWorker>(15,
+            TimeUnit.MINUTES, 5, TimeUnit.MINUTES).addTag("SendWorker").build()
 
        // WorkManager.getInstance(application).cancelAllWork()
         WorkManager.getInstance(application).enqueueUniquePeriodicWork("SendWorker", ExistingPeriodicWorkPolicy.KEEP,workReq)

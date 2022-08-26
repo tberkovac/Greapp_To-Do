@@ -9,11 +9,11 @@ import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.work.*
+import com.tberkovac.greapp.MainActivity
 import com.tberkovac.greapp.R
-import com.tberkovac.greapp.repositories.DailyActivityRepository
+import com.tberkovac.greapp.repositories.SendWorker
 import com.tberkovac.greapp.viewmodel.DailyActivityViewModel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var frameLayout : FrameLayout
@@ -33,14 +33,14 @@ class HomeFragment : Fragment() {
         loadFragment(R.id.frame1Id, CardFragment())
         dailyActivityViewModel.getTodaysActivities()
         addActivityButton.setOnClickListener{
-            com.tberkovac.greapp.MainActivity.viewPagerAdapter.removeAllAndAdd(AddActivityFragment())
-            com.tberkovac.greapp.MainActivity.viewPagerAdapter.notifyDataSetChanged()
+            MainActivity.viewPagerAdapter.removeAllAndAdd(AddActivityFragment())
+            MainActivity.viewPagerAdapter.notifyDataSetChanged()
         }
 
         breakBtn.setOnClickListener {
-            GlobalScope.launch {
-                Log.v("sve jucerasnje", DailyActivityRepository.getYesterdays().toString())
-            }
+            val worker = OneTimeWorkRequestBuilder<SendWorker>().build()
+
+            WorkManager.getInstance(requireContext()).enqueue(worker)
         }
 
         return view

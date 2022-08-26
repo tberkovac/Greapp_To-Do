@@ -17,12 +17,6 @@
         android:theme="@style/Theme.Greapp"
         android:windowSoftInputMode="adjustResize">
 
-        <service
-            android:name="com.tberkovac.greapp.repositories.LatestMovieService"
-            android:enabled="true"
-            android:exported="true"
-            />
-
         <activity
             android:name="com.tberkovac.greapp.MainActivity"
             android:exported="true"
